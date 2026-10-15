@@ -44,7 +44,7 @@ def ensure_src_dir():
 def load_data():
     fr_api = FlightRadar24API()
     airport = fr_api.get_airport_details(selected_airport_code)
-    data = airport["airport"]["pluginData"]["schedule"]
+    data = airport["airport"]["pluginData"]
     return data
 
 
@@ -161,10 +161,25 @@ def format_local_time(unix_timestamp):
     dt = datetime.fromtimestamp(unix_timestamp, tz=timezone.utc).astimezone()
     return dt.strftime("%Y.%m.%d %H:%M")
 
+def get_airport_city_name(data):
+    selected_airport_city = (
+        ("details", "position", "region", "city"),
+        ("details", "position", "city"),
+        ("details", "city"),
+        ("position", "region", "city"),
+        ("position", "city"),
+        ("city",))
+    
+    selected_airport_city = get_data(data, selected_airport_city)
+    if selected_airport_city in error_values:
+        selected_airport_city = selected_airport_name
+    
+    return selected_airport_city
 
 def load_departures(data):
-    departures = data["departures"]["data"]
+    departures = data["schedule"]["departures"]["data"]
     departure_list = []
+    selected_airport_city = get_airport_city_name(data)
     for item in departures:
         unix_timestamp = (
             ("flight", "time", "scheduled", "departure", "time"),
@@ -204,7 +219,7 @@ def load_departures(data):
         )
         destination = get_data(item, destination)
         if destination not in error_values:
-            destination = f"{destination} <- {selected_airport_name}"
+            destination = f"{selected_airport_city} -> {destination}"
 
         country = (
             ("flight", "airport", "destination", "position", "country", "name"),
@@ -278,8 +293,9 @@ def load_departures(data):
 
 
 def load_arrivals(data):
-    arrivals = data["arrivals"]["data"]
+    arrivals = data["schedule"]["arrivals"]["data"]
     arrival_list = []
+    selected_airport_city = get_airport_city_name(data)
     for item in arrivals:
         unix_timestamp = (
             ("flight", "time", "scheduled", "arrival"),
@@ -318,7 +334,7 @@ def load_arrivals(data):
         )
         origin = get_data(item, origin)
         if origin not in error_values:
-            origin = f"{origin} -> {selected_airport_name}"
+            origin = f"{selected_airport_city} <- {origin}"
 
         country = (
             ("flight", "airport", "origin", "position", "country", "name"),
@@ -402,8 +418,8 @@ class FlightMonitor(QMainWindow):
         
         screen = QApplication.primaryScreen().availableGeometry()
         # Safe limits for older hardware
-        window_height = min(int(screen.height() * 0.8), 735)
-        window_width = min(int(screen.width() * 0.9), 1050)
+        window_height = min(int(screen.height() * 0.8), 750)
+        window_width = min(int(screen.width() * 0.9), 1075)
 
         self.resize(window_width, window_height)
         self.move(screen.center() - self.rect().center())
@@ -565,13 +581,27 @@ class FlightMonitor(QMainWindow):
         self.update_refresh_button_state()
 
     def update_refresh_button_state(self):
-        is_ready = bool(selected_airport_code and selected_airport_code.strip())
+        has_code = bool(selected_airport_code and selected_airport_code.strip())
+        cooldown_active = getattr(self, 'remaining_time', 0) > 0
+        is_ready = has_code and not cooldown_active
+
+        # ensure the button stays disabled during cooldown even after airport changes
         self.btn_refresh.setEnabled(is_ready)
         if is_ready:
             self.btn_refresh.setStyleSheet("background-color: rgba(46, 204, 113, 140);")
         else:
-            self.btn_refresh.setStyleSheet("background-color: #444444; color: #bbbbbb; border: 1px solid #555555;")
-            self.btn_refresh.setText(ui_lang["load"][trs])
+            # if a cooldown is active, always show the countdown text (prevents flash)
+            if cooldown_active:
+                self.btn_refresh.setStyleSheet("background-color: #444444; color: #bbbbbb; border: 1px solid #555555;")
+                try:
+                    self.btn_refresh.setText(f"{ui_lang['wait'][trs]} ({self.remaining_time}s)")
+                except Exception:
+                    # fallback to generic load text if something goes wrong
+                    self.btn_refresh.setText(ui_lang["load"][trs])
+            else:
+                self.btn_refresh.setStyleSheet("background-color: #444444; color: #bbbbbb; border: 1px solid #555555;")
+                self.btn_refresh.setText(ui_lang["load"][trs])
+
         if hasattr(self, 'btn_open_flightradar'):
             self.update_open_flightradar_button_state()
 
@@ -932,7 +962,7 @@ class FlightMonitor(QMainWindow):
         # 2. 100-POINT COLUMN DISTRIBUTION
         # Total: 100 (as a percentage)
         # Time, Flight, Destination/Departure, Country, Airline, Type, Status
-        stretch_factors = [15, 8, 20, 15, 14, 17, 11]
+        stretch_factors = [15, 8, 19, 14, 14, 17, 13]
         
         # Calculate the available width (roughly window width - sidebar)
         available_width = self.width() - 250 
@@ -1130,7 +1160,7 @@ class FlightMonitor(QMainWindow):
         ]
         t = Table(data_list, colWidths=col_widths, repeatRows=1)
         t.setStyle(TableStyle([
-            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#2c3e50")),
+            ("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#BFDBFE")),
             ("TEXTCOLOR", (0, 0), (-1, 0), colors.whitesmoke),
             ("ALIGN", (0, 0), (-1, -1), "CENTER"),
             ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
