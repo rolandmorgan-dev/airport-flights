@@ -6,7 +6,7 @@ A modern PySide6 desktop application for viewing airport arrivals and departures
 
 Airport Flights allows you to select from 9,000 airports worldwide and view their current arrival and departure information. Flight data can be searched, copied, and exported to PDF or TXT files with a single click.
 
-The application features a custom graphical interface, English and Hungarian language support, and a configurable airport list.
+The application features a custom graphical interface, with instant switching between English and Hungarian language.
 
 **[IMAGE 1 — Main application window showing the overall GUI and flight table]**
 
@@ -33,12 +33,6 @@ The application features a custom graphical interface, English and Hungarian lan
 
 **[IMAGE 4 — Example of an exported PDF or TXT file]**
 
-## Configuration
-
-The airport list is stored in `src/airports.json`.
-
-You can add or edit airport entries in the JSON file to customize the available selection. The application also uses JSON files for localization and settings.
-
 ## Built With
 
 - Python
@@ -52,12 +46,10 @@ You can add or edit airport entries in the JSON file to customize the available 
 Airport-Flights/
 ├── images/          # Application images and assets
 ├── src/             # JSON configuration files
-├── main.py          # Application entry point
+├── flights.py          # Application entry point
 ├── LICENSE          # Project license
 └── README.md        # Project documentation
 ```
-
-*Adjust the filenames above to match the actual repository.*
 
 
 # Disclaimer
