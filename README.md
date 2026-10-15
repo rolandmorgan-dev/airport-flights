@@ -1,7 +1,65 @@
-**Airport Flights** is a modern desktop application with a GUI that lets you choose from over 9,000 airports worldwide. The airport list can be extended by editing the `airports.json` file. You can view current arrival and departure information, search and copy flight data, and export it to PDF or TXT files with a single click.
+# Airport Flights
 
-The application supports English and Hungarian. You can switch languages instantly without restarting the program. The interface updates immediately, while the flight list updates when you reload the data. Exported PDF and TXT files also use the selected language.
+A modern PySide6 desktop application for viewing airport arrivals and departures.
 
-<small>
-This project is for educational and portfolio purposes only. It uses an unofficial Python API wrapper to fetch flight data. Flightradar24 AB is the service provider. This project is not affiliated with, endorsed by, or sponsored by Flightradar24.
-</small>
+## Overview
+
+Airport Flights allows you to select from 9,000 airports worldwide and view their current arrival and departure information. Flight data can be searched, copied, and exported to PDF or TXT files with a single click.
+
+The application features a custom graphical interface, English and Hungarian language support, and a configurable airport list.
+
+**[IMAGE 1 — Main application window showing the overall GUI and flight table]**
+
+## Features
+
+- **9,000 Airports** — Select an airport from the available list. The list can be extended by editing `airports.json`.
+- **Arrivals and Departures** — View flight information in separate tabs.
+- **Search Flights** — Quickly filter the displayed flight data.
+- **Copy Data** — Copy flight information from the application.
+- **PDF and TXT Export** — Save flight data in either format.
+- **English and Hungarian** — Switch languages without restarting the application.
+- **Localized Exports** — PDF and TXT files use the currently selected language.
+- **Custom GUI** — A modern desktop interface built with PySide6.
+
+## Demo
+
+**[GIF 1 — Short application walkthrough showing airport selection, arrivals/departures, language switching, search, and export]**
+
+## Screenshots
+
+**[IMAGE 2 — Arrivals tab with flight data loaded]**
+
+**[IMAGE 3 — Departures tab with flight data loaded]**
+
+**[IMAGE 4 — Example of an exported PDF or TXT file]**
+
+## Configuration
+
+The airport list is stored in `src/airports.json`.
+
+You can add or edit airport entries in the JSON file to customize the available selection. The application also uses JSON files for localization and settings.
+
+## Built With
+
+- Python
+- PySide6
+- FlightRadarAPI — an unofficial Python wrapper for accessing Flightradar24 flight data
+- ReportLab — PDF generation
+
+## Project Structure
+
+```text
+Airport-Flights/
+├── images/          # Application images and assets
+├── src/             # JSON configuration files
+├── main.py          # Application entry point
+├── LICENSE          # Project license
+└── README.md        # Project documentation
+```
+
+*Adjust the filenames above to match the actual repository.*
+
+
+# Disclaimer
+
+*This project is for educational and portfolio purposes only. It uses an unofficial Python API wrapper to fetch flight data. Flightradar24 AB is the service provider. This project is not affiliated with, endorsed by, or sponsored by Flightradar24.*
