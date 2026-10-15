@@ -4,7 +4,7 @@ A modern PySide6 desktop application for viewing airport arrivals and departures
 
 ## Overview
 
-Airport Flights allows you to select from 9,000 airports worldwide and view their current arrival and departure information. Flight data can be searched, copied, and exported to PDF or TXT files with a single click.
+Airport Flights allows you to select from 9,000 airports worldwide and view their current arrival and departure information. Flight data can be searched, copied, and exported to PDF or TXT files with a single click. Exports include the data from the currently active tab (arrivals or departures) in the selected format.
 
 The application features a custom graphical interface, with instant switching between English and Hungarian language.
 
