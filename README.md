@@ -8,8 +8,6 @@ Airport Flights allows you to select from 9,000 airports worldwide and view thei
 
 The application features a custom graphical interface, with instant switching between English and Hungarian language.
 
-**[IMAGE 1 — Main application window showing the overall GUI and flight table]**
-
 ## Features
 
 - **9,000 Airports** — Select an airport from the available list. The list can be extended by editing `airports.json`.
@@ -27,11 +25,23 @@ The application features a custom graphical interface, with instant switching be
 
 ## Screenshots
 
-**[IMAGE 2 — Arrivals tab with flight data loaded]**
+**Application GUI — Arrivals and Departures (English)**
+<p align="center">
+  <img src="screenshots/Arrivals.png" width="49%">
+  <img src="screenshots/Departures.png" width="49%">
+</p>
 
-**[IMAGE 3 — Departures tab with flight data loaded]**
+**PDF Export — English and Hungarian**
+<p align="center">
+  <img src="screenshots/pdf_eng_arrivals.png" width="49%">
+  <img src="screenshots/pdf_hun_arrivals.png" width="49%">
+</p>
 
-**[IMAGE 4 — Example of an exported PDF or TXT file]**
+**TXT Export — English and Hungarian**
+<p align="center">
+  <img src="screenshots/txt_eng_departures.png" width="49%">
+  <img src="screenshots/txt_hun_departures.png" width="49%">
+</p>
 
 ## Built With
 
