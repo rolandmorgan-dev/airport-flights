@@ -56,7 +56,7 @@ The application features a custom graphical interface, with instant switching be
 Airport-Flights/
 ├── images/          # Application images and assets
 ├── src/             # JSON configuration files
-├── flights.py          # Application entry point
+├── flights.py       # Application entry point
 ├── LICENSE          # Project license
 └── README.md        # Project documentation
 ```
