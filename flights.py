@@ -41,7 +41,9 @@ def ensure_src_dir():
 
 
 # --- Load raw data ---
+data = None
 def load_data():
+    global data
     fr_api = FlightRadar24API()
     airport = fr_api.get_airport_details(selected_airport_code)
     data = airport["airport"]["pluginData"]
@@ -695,6 +697,10 @@ class FlightMonitor(QMainWindow):
         self.btn_save_pdf.setText(ui_lang["save_pdf"][trs])
         self.tab_changed_rename_trigger()
         self.btn_exit.setText(ui_lang["exit"][trs])
+        
+        self.table_arrivals.clear()
+        self.table_departures.clear()
+        self.handle_refresh(1)
 
     def setup_title_bar(self):
         self.title_bar = QFrame()
@@ -1040,12 +1046,13 @@ class FlightMonitor(QMainWindow):
         if elapsed < 15:
             self.start_cooldown(15 - elapsed)
 
-    def handle_refresh(self):
+    def handle_refresh(self, is_local=0):
         settings["last_refresh"] = time.time()
-        self.data = load_data()
+        self.data = data if is_local else load_data()
         self.populate_table(self.table_arrivals, load_arrivals(self.data), "from")
         self.populate_table(self.table_departures, load_departures(self.data), "to")
-        self.start_cooldown(15)
+        if not is_local:
+            self.start_cooldown(15)
 
     def start_cooldown(self, seconds):
         self.remaining_time = seconds
