@@ -13,8 +13,8 @@ from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 
-from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QFrame, 
-                               QVBoxLayout, QHBoxLayout, QTabWidget, QLabel, 
+from PySide6.QtWidgets import (QApplication, QMainWindow, QWidget, QFrame,
+                               QVBoxLayout, QHBoxLayout, QTabWidget, QLabel,
                                QPushButton, QLineEdit, QTreeWidget, QTreeWidgetItem,
                                QHeaderView, QGraphicsBlurEffect, QMessageBox, QSizeGrip,
                                QCompleter, QToolButton, QMenu)
@@ -120,7 +120,7 @@ def get_data(curr_data, paths_):
             return temp
         else:
             continue
-    
+
     error = ("Nincs adat", "Hibás adat") if trs else ("No data", "Invalid data")
     return error[1] if isinstance(temp, str) else error[0]
 
@@ -171,11 +171,11 @@ def get_airport_city_name(data):
         ("position", "region", "city"),
         ("position", "city"),
         ("city",))
-    
+
     selected_airport_city = get_data(data, selected_airport_city)
     if selected_airport_city in error_values:
         selected_airport_city = selected_airport_name
-    
+
     return selected_airport_city
 
 def load_departures(data):
@@ -413,11 +413,11 @@ class FlightMonitor(QMainWindow):
     def __init__(self):
         super().__init__()
         self.data = None
-        
+
         self.icon_path = get_real_dir("images/gui_airplane.ico")
         self.setWindowIcon(QIcon(self.icon_path))
         self.setWindowTitle(ui_lang["program_name"][trs])
-        
+
         screen = QApplication.primaryScreen().availableGeometry()
         # Safe limits for older hardware
         window_height = min(int(screen.height() * 0.8), 750)
@@ -446,48 +446,48 @@ class FlightMonitor(QMainWindow):
         self.main_layout.setSpacing(0)
 
         self.setup_title_bar()
-        
+
         self.content_area = QWidget()
         self.content_area.setObjectName("MainContent")
-        
+
         # Updated: more transparent background (160) and lighter headers
         self.content_area.setStyleSheet("""
-            QWidget#MainContent { 
-                background: rgba(20, 30, 45, 160); 
-                border-bottom-left-radius: 15px; 
-                border-bottom-right-radius: 15px; 
+            QWidget#MainContent {
+                background: rgba(20, 30, 45, 160);
+                border-bottom-left-radius: 15px;
+                border-bottom-right-radius: 15px;
             }
             QTabWidget::pane { border: 1px solid rgba(255,255,255,15); background: transparent; }
-            QTabBar::tab { 
-                background: rgba(40, 40, 40, 150); 
-                color: #ddd; 
-                padding: 10px 20px; 
-                border-top-left-radius: 8px; 
-                border-top-right-radius: 8px; 
-                margin-right: 2px; 
+            QTabBar::tab {
+                background: rgba(40, 40, 40, 150);
+                color: #ddd;
+                padding: 10px 20px;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+                margin-right: 2px;
             }
             QTabBar::tab:selected { background: rgba(52, 152, 219, 180); color: white; }
-            QTreeWidget { 
-                background: transparent; 
-                border: none; 
-                color: white; 
-                alternate-background-color: rgba(255,255,255,5); 
+            QTreeWidget {
+                background: transparent;
+                border: none;
+                color: white;
+                alternate-background-color: rgba(255,255,255,5);
             }
-            QHeaderView::section { 
-                background: rgba(60, 60, 60, 180); 
-                color: white; 
-                padding: 6px; 
-                border: 0.5px solid rgba(255,255,255,20); 
+            QHeaderView::section {
+                background: rgba(60, 60, 60, 180);
+                color: white;
+                padding: 6px;
+                border: 0.5px solid rgba(255,255,255,20);
                 font-weight: bold;
             }
         """)
-        
+
         self.h_layout = QHBoxLayout(self.content_area)
         self.setup_tabs()
         self.setup_side_panel()
-        
+
         self.main_layout.addWidget(self.content_area)
-        
+
         # Add a QSizeGrip so a frameless window can be resized with the mouse
         self.size_grip = QSizeGrip(self)
         # Reduce the visual footprint so it won't cover nearby buttons
@@ -498,9 +498,9 @@ class FlightMonitor(QMainWindow):
         self.timer.timeout.connect(self.update_countdown)
         self.remaining_time = 0
         self._old_pos = None
-        
+
         self.tabs.currentChanged.connect(self.tab_changed_rename_trigger)
-        
+
         self.check_last_refresh_on_startup()
 
     def tab_changed_rename_trigger(self):
@@ -662,12 +662,15 @@ class FlightMonitor(QMainWindow):
             msg.exec()
 
     def set_language(self, is_hungarian):
+        self.eng_button.setChecked(not is_hungarian)
+        self.hun_button.setChecked(is_hungarian)
+
         global trs
+        if trs == is_hungarian:
+            return
+
         trs = bool(is_hungarian)
         settings["language"] = "HU" if trs else "EN"
-
-        self.eng_button.setChecked(not trs)
-        self.hun_button.setChecked(trs)
 
         # Taskbar title
         self.setWindowTitle(ui_lang["program_name"][trs])
@@ -697,10 +700,13 @@ class FlightMonitor(QMainWindow):
         self.btn_save_pdf.setText(ui_lang["save_pdf"][trs])
         self.tab_changed_rename_trigger()
         self.btn_exit.setText(ui_lang["exit"][trs])
-        
-        self.table_arrivals.clear()
-        self.table_departures.clear()
-        self.handle_refresh(1)
+
+        arrivals_has_records = self.table_arrivals.model().rowCount()
+        departures_has_records = self.table_departures.model().rowCount()
+        if data and (arrivals_has_records or departures_has_records):
+            self.table_arrivals.clear()
+            self.table_departures.clear()
+            self.handle_refresh(1)
 
     def setup_title_bar(self):
         self.title_bar = QFrame()
@@ -962,16 +968,16 @@ class FlightMonitor(QMainWindow):
         tree.setHeaderLabels(headers)
         tree.setContextMenuPolicy(Qt.CustomContextMenu)
         tree.customContextMenuRequested.connect(self.show_table_context_menu)
-        
+
         header = tree.header()
-        
+
         # 2. 100-POINT COLUMN DISTRIBUTION
         # Total: 100 (as a percentage)
         # Time, Flight, Destination/Departure, Country, Airline, Type, Status
         stretch_factors = [15, 8, 19, 14, 14, 17, 13]
-        
+
         # Calculate the available width (roughly window width - sidebar)
-        available_width = self.width() - 250 
+        available_width = self.width() - 250
 
         for i, factor in enumerate(stretch_factors):
             # Calculate the initial pixel width from the percentage value
@@ -979,7 +985,7 @@ class FlightMonitor(QMainWindow):
             tree.setColumnWidth(i, col_width)
             # Allow the user to resize the column if desired
             header.setSectionResizeMode(i, QHeaderView.Interactive)
-            
+
         header.setStretchLastSection(True)
         return tree
 
@@ -1024,7 +1030,7 @@ class FlightMonitor(QMainWindow):
         self.btn_save_pdf.clicked.connect(lambda: self.export_data("pdf"))
         v_layout.addWidget(self.btn_save_pdf)
         v_layout.addStretch(3)
-        
+
 
         # Button to open Flightradar (modern gray styling)
         current_tab = self.tabs.tabText(self.tabs.currentIndex())
