@@ -1,3 +1,3 @@
-PySide6
-FlightRadarAPI
-reportlab
+PySide6>=6.10.2
+FlightRadarAPI==1.5.1
+reportlab>=4.4.10
