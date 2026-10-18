@@ -195,7 +195,7 @@
         "Zimbabwe": "Zimbabwe"
     },
     "ui_lang": {
-        "program_name": ["Airport Flight Monitor", "Reptéri Járatfigyelő"],
+        "program_name": ["Airport Flights Monitor", "Reptéri Járatfigyelő"],
         "airport_placeholder": ["Select an airport", "Válassz egy repteret"],
         "load": ["Load flights", "Járatok betöltése"],
         "search": ["Search", "Keresés"],
