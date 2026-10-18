@@ -21,7 +21,7 @@ The application features a custom graphical interface, with instant switching be
 
 ## Demo
 
-**[GIF 1 — Short application walkthrough showing airport selection, arrivals/departures, language switching, search, and export]**
+**[GIF 1 — SOON: Short application walkthrough showing airport selection, arrivals/departures, language switching, search, and export]**
 
 ## Screenshots
 
@@ -56,7 +56,7 @@ The application features a custom graphical interface, with instant switching be
 Airport-Flights/
 ├── images/          # Application images and assets
 ├── src/             # JSON configuration files
-├── flights.py       # Application entry point
+├── flights.pyw      # Application entry point
 ├── LICENSE          # Project license
 └── README.md        # Project documentation
 ```
