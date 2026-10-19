@@ -69,7 +69,7 @@ pip install -r requirements.txt
 
 Run the application from source:
 ```bash
-python flights.pyw
+python airport_flights.pyw
 ```
 
 ## Project Structure
@@ -83,7 +83,7 @@ airport-flights/
 ├── LICENSE
 ├── README.md
 ├── demo.gif             # Application walkthrough
-├── flights.pyw          # Application entry point
+├── airport_flights.pyw  # Application entry point
 └── requirements.txt     # Python dependencies
 ```
 
