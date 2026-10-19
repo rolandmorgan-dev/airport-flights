@@ -20,7 +20,7 @@ The application features a custom graphical interface, with instant switching be
 
 ## Demo
 
-**Short application walkthrough showing airport selection and loading, arrivals/departures, language switching, search, and PDF/TXT export in English and Hungarian.**
+**Short application walkthrough showing airport selection and loading, arrivals/departures, search, language switching, and PDF/TXT export in English and Hungarian.**
 <p align="center">
   <img src="demo.gif" alt="Application demo" width="800">
 </p>
@@ -88,6 +88,6 @@ airport-flights/
 ```
 
 
-### Disclaimer
+# Disclaimer
 
 *This project is for educational and portfolio purposes only. It uses an unofficial Python API wrapper to fetch flight data. Flightradar24 AB is the service provider. This project is not affiliated with, endorsed by, or sponsored by Flightradar24.*
